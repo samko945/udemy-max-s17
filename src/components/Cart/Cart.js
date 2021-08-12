@@ -25,6 +25,13 @@ const Cart = (props) => {
 		setCheckingOut(true);
 	};
 
+	const submitOrderHandler = (userData) => {
+		fetch("https://udemy-max-s17-http-forms-default-rtdb.firebaseio.com/orders.json", {
+			method: "POST",
+			body: JSON.stringify({ user: userData, items: cartCtx.items }),
+		});
+	};
+
 	const cartItems = (
 		<ul className={classes["cart-items"]}>
 			{cartCtx.items.map((item) => (
@@ -60,7 +67,7 @@ const Cart = (props) => {
 				<span>Total Amount</span>
 				<span>{totalAmount}</span>
 			</div>
-			{checkingOut && <Checkout onCancel={props.onClose} />}
+			{checkingOut && <Checkout onConfirm={submitOrderHandler} onCancel={props.onClose} />}
 			{!checkingOut && modalActions}
 		</Modal>
 	);
